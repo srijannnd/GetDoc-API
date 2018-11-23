@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_jwt.settings import api_settings
 from accounts.serializers import UserSignupSerializer
+from accounts.permissions import NonAuthenticatedOnly
 
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -16,7 +17,7 @@ User = get_user_model()
 
 
 class LoginView(APIView):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [NonAuthenticatedOnly]
 
     def post(self, request):
         if request.user.is_authenticated:
@@ -45,7 +46,7 @@ class LoginView(APIView):
 class SignupView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSignupSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [NonAuthenticatedOnly]
 
     def get_serializer_context(self):
         return {'request': self.request}
