@@ -28,7 +28,7 @@ class LoginView(APIView):
         username = data.get('username')  # username or email address
         password = data.get('password')
         qs = User.objects.filter(
-            Q(username__iexact=username) |
+            Q(mobile__iexact=username) |
             Q(email__iexact=username)
         ).distinct()
         if qs.count() == 1:
@@ -46,6 +46,3 @@ class SignupView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSignupSerializer
     permission_classes = [NonAuthenticatedOnly]
-
-    def get_serializer_context(self):
-        return {'request': self.request}

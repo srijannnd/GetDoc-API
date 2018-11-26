@@ -22,7 +22,7 @@ class UserSignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'username',
+            'mobile',
             'email',
             'password',
             'password2',
@@ -32,7 +32,7 @@ class UserSignupSerializer(serializers.ModelSerializer):
         ]
         extra_kwargs = {'password': {'write_only': True}}
 
-    def get_message(self):
+    def get_message(self, user):
         return "User created Successfully. Email verification required"
 
     def get_expires(self, user):
@@ -64,7 +64,7 @@ class UserSignupSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user_obj = User.objects.create(
-            username=validated_data.get('username'),
+            mobile=validated_data.get('mobile'),
             email=validated_data.get('email')
         )
         user_obj.set_password(validated_data.get('password'))
